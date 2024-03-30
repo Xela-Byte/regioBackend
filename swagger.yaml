@@ -64,7 +64,7 @@ paths:
         - auth
       summary: Verify User Email
       parameters:
-        - name: query
+        - name: emailOtp
           in: query
           description: Verify Email Data
           required: true
