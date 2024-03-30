@@ -39,6 +39,8 @@ paths:
       parameters:
         - name: body
           in: body
+        - name: accountType
+          in: query
           description: User registerUser
           required: true
           schema:
@@ -107,9 +109,13 @@ definitions:
       - email
       - password
       - location
+      - accountType
     optional:
       - sellerDetails
     properties:
+      accountType:
+        type: string
+        description: User Account Type, seller / customer
       firstName:
         type: string
         description: User Firstname
