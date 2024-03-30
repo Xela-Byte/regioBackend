@@ -1,0 +1,144 @@
+tags:
+  - name: auth
+    description: Auth API
+
+paths:
+  # [POST] /auth/loginUser
+  /auth/loginUser:
+    post:
+      tags:
+        - auth
+      summary: User Sign in
+      parameters:
+        - name: body
+          in: body
+          description: loginUser Data
+          required: true
+          schema:
+            $ref: '#/definitions/loginUser'
+      responses:
+        200:
+          description: 'Accepted'
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        404:
+          description: 'Not Found'
+        500:
+          description: 'Server Error'
+
+  # [POST] /auth/registerUser
+  /auth/registerUser:
+    post:
+      tags:
+        - auth
+      summary: User registerUser
+      parameters:
+        - name: body
+          in: body
+          description: User registerUser
+          required: true
+          schema:
+            $ref: '#/definitions/registerUser'
+      responses:
+        200:
+          description: 'Accepted'
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        404:
+          description: 'Not Found'
+        500:
+          description: 'Server Error'
+
+  # [POST] /auth/verifyUser?emailOtp=EmailOtp
+  /auth/verifyUser:
+    post:
+      tags:
+        - auth
+      summary: Verify User Email
+      parameters:
+        - name: query
+          in: query
+          description: Verify Email Data
+          required: true
+          schema:
+            $ref: '#/definitions/verifyUser'
+      responses:
+        200:
+          description: 'Accepted'
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        404:
+          description: 'Not Found'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  loginUser:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: User Email
+      password:
+        type: string
+        description: User Password
+
+  registerUser:
+    type: object
+    required:
+      - firstName
+      - lastName
+      - email
+      - password
+      - location
+    optional:
+      - sellerDetails
+    properties:
+      firstName:
+        type: string
+        description: User Firstname
+      lastName:
+        type: string
+        description: User Lastname
+      email:
+        type: string
+        description: User Email
+      password:
+        type: string
+        description: User Password
+      location:
+        type: string
+        description: User Location { Coordinates }
+      sellerDetails:
+        type: object
+        description: Seller Details
+
+  verifyUser:
+    type: object
+    required:
+      - emailOtp
+    properties:
+      emailOtp:
+        type: string
+        description: Otp Sent to User Mail
+
+schemes:
+  - https
+  - http
+
