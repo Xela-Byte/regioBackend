@@ -37,7 +37,7 @@ const options = {
       version: '1.0.0',
       description: 'API documentation for Regio',
     },
-    basePath: '/v1',
+    basePath: '/',
   },
   apis: ['swagger.yaml'],
 };
