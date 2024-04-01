@@ -86,6 +86,33 @@ paths:
         500:
           description: 'Server Error'
 
+  # [POST] /auth/resendOtp?userID=userID
+  /auth/resendOtp:
+    post:
+      tags:
+        - auth
+      summary: Resend Verification Email
+      parameters:
+        - name: userID
+          in: query
+          description: User ID
+          required: true
+          schema:
+            $ref: '#/definitions/resendOtp'
+      responses:
+        200:
+          description: 'Accepted'
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        404:
+          description: 'Not Found'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   loginUser:
@@ -143,6 +170,15 @@ definitions:
       emailOtp:
         type: string
         description: Otp Sent to User Mail
+
+  resendOtp:
+    type: object
+    required:
+      - userID
+    properties:
+      userID:
+        type: string
+        description: User ID
 
 schemes:
   - https
