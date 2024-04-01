@@ -26,6 +26,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isSeller: {
+      type: Boolean,
+      default: false
+    },
     password: {
       type: String,
       required: true,
@@ -68,7 +72,7 @@ const userSchema = new Schema(
       vatID: {
         type: String,
       },
-      availablity: {
+      availability: {
         type: String,
         default: 'open',
       },

@@ -10,7 +10,7 @@ function errorProcessing(receivedErrorMessage) {
   return {
     errorCode: errorObject > 1 ? errorMessage[0] : 500,
     errorMessage: {
-      statusCode: errorMessage ? Number(errorMessage[0].trim()) : 500,
+      statusCode: errorMessage ?  !isNaN(Number(errorMessage[0].trim())) ? Number(errorMessage[0].trim()) : 500 : 500,
       message: errorObject > 1 ? errorMessage[1] : 'Internal Server Error.',
     },
   };
