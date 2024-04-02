@@ -34,11 +34,27 @@ router.delete('/auth/deleteAllUsers/:tag', deleteAllUsers);
 
 // Seller
 router.post('/seller/register/:id', sellerRegister)
+router.patch('/seller/settings', sellerRegister)
 
+
+// Products
+router.post('/product/add', sellerRegister)
+router.post('/product/categories/add', sellerRegister)
+router.delete('/product/delete/:id', sellerRegister)
+router.patch('/product/add', sellerRegister)
+router.delete('/product/delete/:id', sellerRegister)
+
+// Visitors
+router.post('/visitors/log', sellerRegister)
+
+// Donors
+
+// Favorites or Wishlist
 
 // Carts
 
 // Posts
+router.post('/posts/add', sellerRegister)
 
 //
 
