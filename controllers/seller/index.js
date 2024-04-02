@@ -1,10 +1,6 @@
 'use strict';
 const { User } = require('../../models/User');
-const { updateToken } = require('../../core/updateToken');
-const jwt = require('jsonwebtoken');
 const { errorHandling } = require('../../middlewares/errorHandling');
-const { generateOTP } = require('../../core/otpGenerator');
-const { sendMail } = require('../../core/emailService');
 const moment = require('moment');
 
 async function sellerRegister(request, response, next) {
@@ -14,6 +10,8 @@ async function sellerRegister(request, response, next) {
     let id = request.params.id;
     let user = await User.findById(id);
     if (!user) errorHandling(`400|User does not exist.|`);
+    if (user.isSeller === true)
+      errorHandling(`400|Seller does already exist.|`);
 
     if (!data.companyName) errorHandling(`400|Company Name field Missing.|`);
     if (!data.ceo) errorHandling(`400|CEO field Missing.|`);
@@ -33,7 +31,7 @@ async function sellerRegister(request, response, next) {
 
     user = await User.findByIdAndUpdate(
       id,
-      { accountType, sellerDetails },
+      { accountType, sellerDetails, isSeller: true },
       { new: true },
     ).select('-password');
 
@@ -48,3 +46,4 @@ async function sellerRegister(request, response, next) {
 module.exports = {
   sellerRegister,
 };
+

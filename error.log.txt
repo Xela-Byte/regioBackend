@@ -160,3 +160,6 @@ Mon Apr 01 2024 03:52:13 GMT+0100 (West Africa Standard Time) Error: ReferenceEr
 Mon Apr 01 2024 03:54:15 GMT+0100 (West Africa Standard Time) Error: ReferenceError: email is not defined
     at registerUser (C:\Users\abide\OneDrive\Desktop\Works\regioBackend\controllers\user\index.js:96:14)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Tue Apr 02 2024 18:26:53 GMT+0100 (West Africa Standard Time) Error: ReferenceError: moment is not defined
+    at sellerRegister (/home/xela/regio_backend/controllers/seller/index.js:23:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
