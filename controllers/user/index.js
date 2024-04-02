@@ -8,26 +8,24 @@ const { generateOTP } = require('../../core/otpGenerator');
 const { sendMail } = require('../../core/emailService');
 const moment = require('moment');
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 async function getAllUsers(req, res, next) {
   try {
     let users;
     users = await User.find();
-    if (!users) errorHandling(`404|No users found.|`)
+    if (!users) errorHandling(`404|No users found.|`);
     return res.status(200).json({ users });
   } catch (e) {
-    next(new Error(e.stack))
+    next(new Error(e.stack));
   }
-
-};
+}
 
 async function getSingleUser(req, res, next) {
   try {
-
     const id = req.params.id;
     const user = await User.findById(id);
-    if (!user) errorHandling(`400|User does not exist.|`)
+    if (!user) errorHandling(`400|User does not exist.|`);
     res.status(200).json({
       statusCode: 200,
       data: user,
@@ -35,20 +33,18 @@ async function getSingleUser(req, res, next) {
   } catch (e) {
     next(new Error(e.stack));
   }
-};
+}
 
 async function registerUser(req, res, next) {
   try {
-    const data =
-      req.body;
+    const data = req.body;
     const accountType = 'customer'; // Default
 
-    if (!data.firstName) errorHandling(`400|Firstname field missing.|`)
-    if (!data.lastName) errorHandling(`400|Lastname field missing.|`)
-    if (!data.location) errorHandling(`400|Location field missing.|`)
-    if (!data.email) errorHandling(`400|Email field missing.|`)
-    if (!data.password) errorHandling(`400|Password field missing.|`)
-
+    if (!data.firstName) errorHandling(`400|Firstname field missing.|`);
+    if (!data.lastName) errorHandling(`400|Lastname field missing.|`);
+    if (!data.location) errorHandling(`400|Location field missing.|`);
+    if (!data.email) errorHandling(`400|Email field missing.|`);
+    if (!data.password) errorHandling(`400|Password field missing.|`);
 
     const existingUser = await User.findOne({
       email: data.email,
@@ -96,7 +92,6 @@ async function registerUser(req, res, next) {
       email: data.email,
     }).select(`-password -sellerDetails`);
 
-
     await sendMail('OTP Email Verification', data.email, 'otp', payload)
       .then(() => {
         res.status(200).json({
@@ -112,20 +107,20 @@ async function registerUser(req, res, next) {
   } catch (e) {
     next(new Error(e.stack));
   }
-};
+}
 
 async function loginUser(req, res, next) {
   try {
-    console.log(req.body)
+    console.log(req.body);
     const data = req.body;
 
-    if (!data.email) errorHandling(`400|Email field Missing/Empty.|`)
-    if (!data.password) errorHandling(`400|Password field Missing/Empty.|`)
+    if (!data.email) errorHandling(`400|Email field Missing/Empty.|`);
+    if (!data.password) errorHandling(`400|Password field Missing/Empty.|`);
 
     const existingUser = await User.findOne({ email: data.email });
-    if (!existingUser) errorHandling(`400|User Doesn't Exist.|`)
+    if (!existingUser) errorHandling(`400|User Doesn't Exist.|`);
     const isMatch = await bcrypt.compare(password, existingUser.password);
-    if (!isMatch) errorHandling(`400|Incorrect Password!.|`)
+    if (!isMatch) errorHandling(`400|Incorrect Password!.|`);
     const token = jwt.sign(
       { email: existingUser.email, _id: existingUser._id },
       process.env.TOKEN,
@@ -139,13 +134,10 @@ async function loginUser(req, res, next) {
       token: token,
       response: existingUser,
     });
-
-
-
   } catch (e) {
-    next(new Error(e.stack))
+    next(new Error(e.stack));
   }
-};
+}
 
 async function verifyUser(req, res, next) {
   const emailOtp = req.query.emailOtp;
@@ -189,7 +181,7 @@ async function verifyUser(req, res, next) {
   } catch (e) {
     next(new Error(e.stack));
   }
-};
+}
 
 async function resendOTP(req, res, next) {
   try {
@@ -216,7 +208,7 @@ async function resendOTP(req, res, next) {
   } catch (e) {
     next(new Error(e.stack));
   }
-};
+}
 
 async function deleteAllUsers(req, res, next) {
   const { tag } = req.params;
@@ -233,55 +225,51 @@ async function deleteAllUsers(req, res, next) {
   } catch (e) {
     next(new Error(e.stack));
   }
-};
+}
 
-
-async function initForgotPassword(request, response, next){
+async function initForgotPassword(request, response, next) {
   try {
     let data = request.body;
 
-    if(!data.email) errorHandling(`400|Email field missing!.|`)
+    if (!data.email) errorHandling(`400|Email field missing!.|`);
 
     let user = await User.findOne({ email: data.email });
 
-    if(!user) errorHandling(`400|User does not exist.|`)
+    if (!user) errorHandling(`400|User does not exist.|`);
 
     // TODO: Add email to receive link for resetting password
 
-    response.status(200).json({ user })
-
-  }
-  catch(e){
-    next(new Error(e.stack))
+    response.status(200).json({ user });
+  } catch (e) {
+    next(new Error(e.stack));
   }
 }
 
-
-async function finalizeForgotPassword(request, response, next){
+async function finalizeForgotPassword(request, response, next) {
   try {
     let data = request.body;
     let id = request.params.id;
 
     let user = await User.findById(id);
-    if (!user) errorHandling(`400|User does not exist.|`)
+    if (!user) errorHandling(`400|User does not exist.|`);
 
-    if(!data.newpassword) errorHandling(`400|New password field missing.|`)
+    if (!data.newpassword) errorHandling(`400|New password field missing.|`);
 
     const newhashedPassword = await bcrypt.hash(data.newpassword, salt);
 
-    user = await User.findByIdAndUpdate(id, { password: newhashedPassword }, { new: true })
+    user = await User.findByIdAndUpdate(
+      id,
+      { password: newhashedPassword },
+      { new: true },
+    );
 
     // TODO: Add email to notify user
 
-    response.status(200).json({ message: "Password Resetted!!", user })
-
-  }
-  catch(e){
-    next(new Error(e.stack))
+    response.status(200).json({ message: 'Password Resetted!!', user });
+  } catch (e) {
+    next(new Error(e.stack));
   }
 }
-
-
 
 module.exports = {
   getAllUsers,
@@ -292,5 +280,6 @@ module.exports = {
   resendOTP,
   deleteAllUsers,
   initForgotPassword,
-  finalizeForgotPassword
-}
+  finalizeForgotPassword,
+};
+

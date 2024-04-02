@@ -28,7 +28,7 @@ const userSchema = new Schema(
     },
     isSeller: {
       type: Boolean,
-      default: false
+      default: false,
     },
     password: {
       type: String,
@@ -91,6 +91,7 @@ const userSchema = new Schema(
 );
 
 const User = mongoose.model('User', userSchema);
+
 module.exports = {
   User: User,
 };
