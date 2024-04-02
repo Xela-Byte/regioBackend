@@ -72,6 +72,24 @@ const userSchema = new Schema(
       vatID: {
         type: String,
       },
+      description: {
+        type: String,
+      },
+      openingHours: {
+        type: String,
+      },
+      googleMapLink: {
+        type: String
+      },
+      minimumOrderValue: {
+        type: Number
+      },
+      maximumDeliveryDistance: {
+        type: Number
+      },
+      productDiscounts: {
+        type: Number
+      },
       availability: {
         type: String,
         default: 'open',
@@ -80,6 +98,10 @@ const userSchema = new Schema(
         type: String,
       },
       likes: {
+        type: Array,
+        ref: 'User',
+      },
+      followers: {
         type: Array,
         ref: 'User',
       },
